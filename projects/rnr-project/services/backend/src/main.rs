@@ -15,10 +15,10 @@ mod models;
 use diesel::PgConnection;
 use rocket::http::{Cookie, Cookies};
 use rocket::outcome::IntoOutcome;
-use rocket::request::{self, Form, FromRequest, Request};
+use rocket::request::{self, Json, FromRequest, Request};
 use rocket::Rocket;
 
-use models::{NewUser};
+use models::{LoggingInUser, NewUser};
 
 #[database("postgres_database")]
 pub struct DbConn(PgConnection);
@@ -40,8 +40,8 @@ impl<'a, 'r> FromRequest<'a, 'r> for Auth {
     }
 }
 
-#[post("/login", data = "<input>")]
-fn login(mut cookies: Cookies, input: Form<NewUser>, conn: DbConn) -> &'static str {
+#[post("/login", data = "<body>")]
+fn login(mut cookies: Cookies, body: Json<NewUser>, conn: DbConn) -> &'static str {
     let user = input.into_inner();
     if user.username.is_empty() {
         index(conn)

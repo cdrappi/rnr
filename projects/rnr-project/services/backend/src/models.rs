@@ -3,15 +3,15 @@ use diesel::result::Error;
 
 mod schema;
 
-use self::schema::users;
-
 #[derive(Queryable, Debug)]
 pub struct User {
     pub id: i32,
+    pub phone: String,
     pub username: String,
+    pub email: String,
 }
 
-use self::schema::users::dsl::{username as users_uname, users as all_users};
+use self::schema::users::dsl::{users, users_uphone};
 
 #[derive(Deserialize)]
 pub struct Ballot {
@@ -21,7 +21,14 @@ pub struct Ballot {
 #[table_name = "users"]
 #[derive(FromForm, Insertable)]
 pub struct NewUser {
-    pub username: String,
+    pub phone: String,
+}
+
+#[table_name = "users"]
+#[derive(FromForm, Insertable)]
+pub struct NewUser {
+    pub phone: String,
+    pub password: String,
 }
 
 impl NewUser {
@@ -31,8 +38,8 @@ impl NewUser {
             .values(&self)
             .execute(conn);
 
-        all_users
-            .filter(users_uname.eq(&self.username))
+        users
+            .filter(users_uphone.eq(&self.phone))
             .get_result::<User>(conn)
     }
 }
