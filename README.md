@@ -1,17 +1,40 @@
 # rnr
-A template for React Native + Rust apps
+A template for easily deploying React Native + Rust apps with Google Kubernetes Engine
 
-<!-- This gives you [JSON Web Token](https://jwt.io/) auth and a few extra files to help you deploy with GCP. I've left a few `TODO`s in the code, so you can set up your own app. You can see what the template looks like [here](https://rnr.herokuapp.com), but I'm not sure why you would want to, because it only lets you log in -->
+# Tech stack
+`rnr` is divided into 3 folders:
 
-## Tech stack
+- donkey (for deploys)
+- clients (e.g. a mobile app)
+- services (e.g. a web server)
+
+
+## Deploy
+This app uses [donkey](https://www.github.com/cdrappi/donkey) to manage deploys. To deploy the service named `backend`, run:
+```sh
+$: deploy backend
+```
+
+To deploy all services, run:
+```sh
+$: deploy
+```
+
+## Clients
+This app gives you two clients:
+
+### Mobile
+- [React Native](https://facebook.github.io/react-native/)
+- [expo](https://github.com/expo/expo)
 
 ### Web
 - [Svelte 3](https://svelte.dev/)
 - [webpack](https://webpack.js.org/)
 
-### Mobile
-- [React Native](https://facebook.github.io/react-native/)
-- [expo](https://github.com/expo/expo)
+
+## Services
+
+This app gives you a Rust server:
 
 ### Backend
 - [Rust (nightly)](https://doc.rust-lang.org/1.2.0/book/nightly-rust.html)

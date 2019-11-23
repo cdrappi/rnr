@@ -1,5 +1,5 @@
+# Config file
+env.yaml
+
 # Mac OS X files
 .DS_Store
-
-# Config file
-projects/*/*.yaml
