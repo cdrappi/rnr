@@ -1,3 +1,4 @@
+
 [submodule "donkey"]
 	path = donkey
-	url = ../donkey
+	url = https://github.com/cdrappi/rnr.git
