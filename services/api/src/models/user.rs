@@ -1,5 +1,5 @@
 use auth::jwt::{decode_jwt, JsonWebToken};
-use bcrypt::{hash, DEFAULT_COST};
+use bcrypt::{hash, verify, DEFAULT_COST};
 use chrono::{NaiveDateTime, Utc};
 use diesel::prelude::PgConnection;
 use diesel::query_dsl::filter_dsl::FilterDsl;
@@ -184,18 +184,18 @@ impl User {
         .execute(conn);
     }
 
+    /// Call bcrypt::hash on password with default cost (10^12)
     pub fn hash_password(password: &str) -> String {
-        return hash(password, DEFAULT_COST)
-            .expect("Error hashing password with bcrypt");
+        hash(password, DEFAULT_COST).expect("bcrypt::hash returned an error")
     }
 
     pub fn get_id_from_token(jwt: &JsonWebToken) -> i32 {
         decode_jwt(jwt).expect("Invalid `jwt` argument").claims.sub
     }
 
+    /// Return true iff the input password matches the saved hash
     pub fn validate_password(user: &User, password: &String) -> bool {
-        let password_hash = hash(password, DEFAULT_COST).unwrap();
-        user.password_hash == password_hash
+        verify(password, &user.password_hash).expect("bcrypt::verify returned an error")
     }
 
     pub fn set_password_hash(
