@@ -1,5 +1,5 @@
 use auth::jwt::{decode_jwt, JsonWebToken};
-use bcrypt::{hash, DEFAULT_COST};
+use bcrypt::{hash, verify, DEFAULT_COST};
 use chrono::{NaiveDateTime, Utc};
 use diesel::prelude::PgConnection;
 use diesel::query_dsl::filter_dsl::FilterDsl;
